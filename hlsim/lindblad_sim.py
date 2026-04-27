@@ -50,32 +50,34 @@ def get_second_order_dilation_trotter_step_from_QubitPauliOperator(
 
 
 def get_dilation_operators(epsilon, ancilla_qubits, system_qubits):
+    val = np.sqrt(2 * epsilon) / 2
     K1_dict = {}
     qps = QubitPauliString([ancilla_qubits[0], system_qubits[0]], [Pauli.X, Pauli.X])
-    K1_dict[qps] = np.sqrt(2 * epsilon) / 2
+    K1_dict[qps] = val
     qps = QubitPauliString([ancilla_qubits[0], system_qubits[0]], [Pauli.Y, Pauli.Y])
-    K1_dict[qps] = np.sqrt(2 * epsilon) / 2
+    K1_dict[qps] = val
     K1 = QubitPauliOperator(K1_dict)
 
     K2_dict = {}
     qps = QubitPauliString([ancilla_qubits[0], system_qubits[-1]], [Pauli.X, Pauli.X])
-    K2_dict[qps] = np.sqrt(2 * epsilon) / 2
+    K2_dict[qps] = val
     qps = QubitPauliString([ancilla_qubits[0], system_qubits[-1]], [Pauli.Y, Pauli.Y])
-    K2_dict[qps] = -np.sqrt(2 * epsilon) / 2
+    K2_dict[qps] = -val
     K2 = QubitPauliOperator(K2_dict)
 
     return [K1, K2]
 
 
 def get_dilation_angles(epsilon, Delta_t):
+    val = (2 / np.pi) * (np.sqrt(2 * epsilon) / 2) * np.sqrt(Delta_t)
     angles_K1 = [
-        (2 / np.pi) * (np.sqrt(2 * epsilon) / 2) * np.sqrt(Delta_t),
-        (2 / np.pi) * (np.sqrt(2 * epsilon) / 2) * np.sqrt(Delta_t),
+        val,
+        val,
         0.0,
     ]
     angles_K2 = [
-        (2 / np.pi) * (np.sqrt(2 * epsilon) / 2) * np.sqrt(Delta_t),
-        -(2 / np.pi) * (np.sqrt(2 * epsilon) / 2) * np.sqrt(Delta_t),
+        val,
+        -val,
         0.0,
     ]
     dilation_angles = {
